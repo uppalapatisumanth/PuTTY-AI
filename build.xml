@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="putty-ai-assistant" default="jar" basedir=".">
+    <description>
+        Ant build file for Putty AI Assistant
+    </description>
+
+    <!-- Global properties -->
+    <property name="src.dir" location="src/main/java"/>
+    <property name="resources.dir" location="src/main/resources"/>
+    <property name="build.dir" location="build"/>
+    <property name="classes.dir" location="${build.dir}/classes"/>
+    <property name="jar.dir" location="${build.dir}/jar"/>
+    <property name="lib.dir" location="lib"/>
+    <property name="main.class" value="com.puttyai.PuttyAIAssistant"/>
+
+    <!-- Clean target -->
+    <target name="clean" description="Clean up build directories">
+        <delete dir="${build.dir}"/>
+        <delete dir="${lib.dir}"/>
+    </target>
+
+    <!-- Initialize target -->
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${jar.dir}"/>
+        <mkdir dir="${lib.dir}"/>
+    </target>
+
+    <!-- Download dependencies -->
+    <target name="download-deps" depends="init" description="Download dependencies">
+        <!-- Create lib directory if it doesn't exist -->
+        <mkdir dir="${lib.dir}"/>
+        
+        <!-- Download JNA for Windows process monitoring -->
+        <get src="https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar"
+             dest="${lib.dir}/jna-5.12.1.jar" usetimestamp="true"/>
+        <get src="https://repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar"
+             dest="${lib.dir}/jna-platform-5.12.1.jar" usetimestamp="true"/>
+             
+        <!-- Download SQLite JDBC for data storage -->
+        <get src="https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.40.0.0/sqlite-jdbc-3.40.0.0.jar"
+             dest="${lib.dir}/sqlite-jdbc-3.40.0.0.jar" usetimestamp="true"/>
+             
+        <!-- Download OpenNLP for natural language processing -->
+        <get src="https://repo1.maven.org/maven2/org/apache/opennlp/opennlp-tools/1.9.4/opennlp-tools-1.9.4.jar"
+             dest="${lib.dir}/opennlp-tools-1.9.4.jar" usetimestamp="true"/>
+             
+        <!-- Download Log4j for logging -->
+        <get src="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.17.2/log4j-api-2.17.2.jar"
+             dest="${lib.dir}/log4j-api-2.17.2.jar" usetimestamp="true"/>
+        <get src="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.17.2/log4j-core-2.17.2.jar"
+             dest="${lib.dir}/log4j-core-2.17.2.jar" usetimestamp="true"/>
+    </target>
+
+    <!-- Compile target -->
+    <target name="compile" depends="download-deps" description="Compile the source code">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" source="1.8" target="1.8" debug="true">
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+        
+        <!-- Copy resources -->
+        <copy todir="${classes.dir}">
+            <fileset dir="${resources.dir}"/>
+        </copy>
+    </target>
+
+    <!-- Create JAR file -->
+    <target name="jar" depends="compile" description="Create JAR file">
+        <jar destfile="${jar.dir}/putty-ai-assistant.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- Run the application -->
+    <target name="run" depends="jar" description="Run the application">
+        <java classname="${main.class}" fork="true">
+            <classpath>
+                <pathelement location="${jar.dir}/putty-ai-assistant.jar"/>
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+</project>

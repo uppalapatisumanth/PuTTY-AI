@@ -1,0 +1,65 @@
+.main-panel {
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: #4d4d4d;
+    -fx-border-width: 1;
+}
+
+.title-bar {
+    -fx-background-color: #1e1e1e;
+    -fx-border-color: #4d4d4d;
+    -fx-border-width: 0 0 1 0;
+}
+
+.window-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.window-button:hover {
+    -fx-background-color: #3c3c3c;
+}
+
+#closeButton:hover {
+    -fx-background-color: #c72c2c;
+}
+
+Label {
+    -fx-text-fill: white;
+}
+
+TextArea, TextField {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: white;
+    -fx-control-inner-background: #3c3c3c;
+}
+
+Button {
+    -fx-background-color: #4d4d4d;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+Button:hover {
+    -fx-background-color: #5a5a5a;
+}
+
+ComboBox {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: white;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #3c3c3c;
+    -fx-border-color: #4d4d4d;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #5a5a5a;
+}
